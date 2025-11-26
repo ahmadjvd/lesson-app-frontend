@@ -82,6 +82,18 @@ let app = new Vue({
         const userPhonePattern = /^\d{10}$/;
         this.isFormValid = userNamePattern.test(this.name) && userPhonePattern.test(this.phone);
       },
+      removeFromCart(cartItem) {
+        if (cartItem.quantity > 1) {
+          cartItem.quantity--;
+        } else {
+          const index = this.cart.indexOf(cartItem);
+          if (index > -1) {
+            this.cart.splice(index, 1);
+          }
+        }
+        const lesson = this.lessons.find(item => item.id === cartItem.id);
+        if (lesson) lesson.Spaces++;
+      },
     }
 
 });
