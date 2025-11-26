@@ -68,6 +68,15 @@ let app = new Vue({
             alert("Search failed. Please try again.");
           });
       },
+       addToCart(lesson) {
+        const existingLesson = this.cart.find(item => item.id === lesson.id);
+        if (existingLesson) {
+          existingLesson.quantity++;
+        } else {
+          this.cart.push({ ...lesson, quantity: 1 });
+        }
+        lesson.Spaces--;
+      },
     }
 
 });
