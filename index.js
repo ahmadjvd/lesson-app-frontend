@@ -12,4 +12,10 @@
       orderConfirmed: false,
       searchQuery: '',
       isFormValid: false
-  }});
+
+  },
+ created() {
+      this.fetchLessons();
+    },
+
+});
