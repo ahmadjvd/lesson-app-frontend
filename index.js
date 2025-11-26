@@ -39,7 +39,7 @@
 
     methods: {
       fetchLessons() {
-        fetch("http://localhost:3000/collection/products")
+        fetch("https://lesson-app-backend-5pwp.onrender.com/collection/products")
           .then(response => response.json())
           .then(data => {
             this.lessons = data;
@@ -54,7 +54,7 @@
         }
 
         // Call backend search endpoint
-        fetch(`http://localhost:3000/search?query=${encodeURIComponent(this.searchQuery)}`)
+        fetch(`https://lesson-app-backend-5pwp.onrender.com/search?query=${encodeURIComponent(this.searchQuery)}`)
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
@@ -115,7 +115,7 @@
           cart: this.cart,
         };
 
-        fetch('http://localhost:3000/placeorder', {
+        fetch('https://lesson-app-backend-5pwp.onrender.com/placeorder', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -127,7 +127,7 @@
           if (data.msg === 'Order placed successfully') {
             
             // Update spaces in backend
-            fetch('http://localhost:3000/update-spaces', {
+            fetch('https://lesson-app-backend-5pwp.onrender.com/update-spaces', {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json',

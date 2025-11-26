@@ -54,7 +54,7 @@
       <div v-if="currentPage === 'lesson'" class="product-container">
         <div v-for="lesson in sortedLessons" :key="lesson.id" class="lesson">
           <i :class="getIconForSubject(lesson.subject)" class="lesson-icon"></i>
-          <img :src="`http://localhost:3000/images/${lesson.image}`" alt="">
+          <img :src="`https://lesson-app-backend-5pwp.onrender.com/images/${lesson.image}`" alt="">
           <h2>{{ lesson.subject }}</h2>
           <p>Location: {{ lesson.location }}</p>
           <p>Price: ${{ lesson.price }}</p>
