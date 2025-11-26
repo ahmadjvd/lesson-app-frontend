@@ -36,5 +36,15 @@
         return this.cart.reduce((total, lesson) => total + (lesson.price * lesson.quantity), 0);
       }
     },
+    methods:{
+          fetchLessons() {
+        fetch("http://localhost:3000/collection/products")
+          .then(response => response.json())
+          .then(data => {
+            this.lessons = data;
+          })
+          .catch(error => console.log("Error fetching products:", error));
+      },
+    }
 
 });
