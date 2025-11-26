@@ -38,7 +38,7 @@
             <option value="subject">Sort by Subject</option>
             <option value="location">Sort by Location</option>
             <option value="price">Sort by Price</option>
-            <option value="Spaces">Sort by Spaces</option>
+            <option value="spaces">Sort by Spaces</option>
           </select>
         </div>
         
@@ -60,7 +60,7 @@
           <p>Price: ${{ lesson.price }}</p>
           <p>Spaces available: {{ lesson.spaces }}</p>
 
-          <button :disabled="lesson.Spaces <= 0" @click="addToCart(lesson)">
+          <button :disabled="lesson.spaces <= 0" @click="addToCart(lesson)">
             Add to Cart
           </button>
         </div>

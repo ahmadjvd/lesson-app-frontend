@@ -78,7 +78,7 @@
         } else {
           this.cart.push({ ...lesson, quantity: 1 });
         }
-        lesson.Spaces--;
+        lesson.spaces--;
       },
 
       validateInput() {
@@ -97,7 +97,7 @@
           }
         }
         const lesson = this.lessons.find(item => item.id === cartItem.id);
-        if (lesson) lesson.Spaces++;
+        if (lesson) lesson.spaces++;
       },
 
       togglePage() {
@@ -146,7 +146,7 @@
             this.cart.forEach(cartItem => {
               const product = this.lessons.find(item => item.id === cartItem.id);
               if (product) {
-                product.Spaces -= cartItem.quantity;
+                product.spaces -= cartItem.quantity;
               }
             });
 
