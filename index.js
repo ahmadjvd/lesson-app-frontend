@@ -1,51 +1,53 @@
-
-let app = new Vue({
+ let app = new Vue({
     el: '#app',
     data: {
-        lessons: [],
-        sortAttribute: 'subject',
-        sortOrder: 'asc',
-        cart: [],
-        currentPage: 'lesson',
-        name: '',
-        phone: '',
-        orderConfirmed: false,
-        searchQuery: '',
-        isFormValid: false
-
+      lessons: [],
+      sortAttribute: 'subject',
+      sortOrder: 'asc',
+      cart: [],
+      currentPage: 'lesson',
+      name: '',
+      phone: '',
+      orderConfirmed: false,
+      searchQuery: '',
+      isFormValid: false
     },
+
     created() {
-        this.fetchLessons();
+      this.fetchLessons();
     },
-    computed: {
-        sortedLessons() {
-            return this.lessons.slice().sort((a, b) => {
-                if (typeof a[this.sortAttribute] === 'string') {
-                    return this.sortOrder === 'asc'
-                        ? a[this.sortAttribute].localeCompare(b[this.sortAttribute])
-                        : b[this.sortAttribute].localeCompare(a[this.sortAttribute]);
-                } else {
-                    return this.sortOrder === 'asc'
-                        ? a[this.sortAttribute] - b[this.sortAttribute]
-                        : b[this.sortAttribute] - a[this.sortAttribute];
-                }
-            });
-        },
 
-        totalPrice() {
-            return this.cart.reduce((total, lesson) => total + (lesson.price * lesson.quantity), 0);
-        }
+    computed: {
+      sortedLessons() {
+        return this.lessons.slice().sort((a, b) => {
+          if (typeof a[this.sortAttribute] === 'string') {
+            return this.sortOrder === 'asc'
+              ? a[this.sortAttribute].localeCompare(b[this.sortAttribute])
+              : b[this.sortAttribute].localeCompare(a[this.sortAttribute]);
+          } else {
+            return this.sortOrder === 'asc'
+              ? a[this.sortAttribute] - b[this.sortAttribute]
+              : b[this.sortAttribute] - a[this.sortAttribute];
+          }
+        });
+      },
+
+      totalPrice() {
+        return this.cart.reduce((total, lesson) => total + (lesson.price * lesson.quantity), 0);
+      }
     },
+
     methods: {
-        fetchLessons() {
-            fetch("http://localhost:3000/collection/products")
-                .then(response => response.json())
-                .then(data => {
-                    this.lessons = data;
-                })
-                .catch(error => console.log("Error fetching products:", error));
-        },
-         searchLessons() {
+      fetchLessons() {
+        fetch("http://localhost:3000/collection/products")
+          .then(response => response.json())
+          .then(data => {
+            this.lessons = data;
+          })
+          .catch(error => console.log("Error fetching products:", error));
+      },
+
+      searchLessons() {
         // If search query is empty, fetch all lessons
         if (this.searchQuery.trim() === "") {
           return this.fetchLessons();
@@ -68,7 +70,8 @@ let app = new Vue({
             alert("Search failed. Please try again.");
           });
       },
-       addToCart(lesson) {
+
+      addToCart(lesson) {
         const existingLesson = this.cart.find(item => item.id === lesson.id);
         if (existingLesson) {
           existingLesson.quantity++;
@@ -77,11 +80,13 @@ let app = new Vue({
         }
         lesson.Spaces--;
       },
-        validateInput() {
+
+      validateInput() {
         const userNamePattern = /^[a-zA-Z\s]+$/;
         const userPhonePattern = /^\d{10}$/;
         this.isFormValid = userNamePattern.test(this.name) && userPhonePattern.test(this.phone);
       },
+
       removeFromCart(cartItem) {
         if (cartItem.quantity > 1) {
           cartItem.quantity--;
@@ -94,9 +99,81 @@ let app = new Vue({
         const lesson = this.lessons.find(item => item.id === cartItem.id);
         if (lesson) lesson.Spaces++;
       },
-       togglePage() {
+
+      togglePage() {
         this.currentPage = this.currentPage === 'lesson' ? 'cart' : 'lesson';
       },
-    }
 
-});
+      sortLessons() {
+        // Sorting is handled by computed property sortedLessons
+      },
+
+      checkout() {
+        const orderData = {
+          name: this.name,
+          phone: this.phone,
+          cart: this.cart,
+        };
+
+        fetch('http://localhost:3000/placeorder', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(orderData),
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.msg === 'Order placed successfully') {
+            
+            // Update spaces in backend
+            fetch('http://localhost:3000/update-spaces', {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ cart: this.cart })
+            })
+            .then(response => response.json())
+            .then(data => {
+              console.log(data.msg);
+            })
+            .catch(error => {
+              console.error('Error updating product availability:', error);
+            });
+
+            // Update frontend
+            this.cart.forEach(cartItem => {
+              const product = this.lessons.find(item => item.id === cartItem.id);
+              if (product) {
+                product.Spaces -= cartItem.quantity;
+              }
+            });
+
+            // Clear cart and show confirmation
+            this.cart = [];
+            this.orderConfirmed = true;
+            this.name = '';
+            this.phone = '';
+            this.isFormValid = false;
+
+            // Hide confirmation after 3 seconds
+            setTimeout(() => {
+              this.orderConfirmed = false;
+            }, 3000);
+
+          } else {
+            alert('There was an issue placing your order.');
+          }
+        })
+        .catch(error => {
+          console.error('Error placing order:', error);
+          alert('Failed to place order. Please try again.');
+        });
+      },
+
+      getIconForSubject(subject) {
+        return '';
+      }
+    }
+  });

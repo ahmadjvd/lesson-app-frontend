@@ -4,8 +4,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+  <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
-    <h1>hello world</h1>
+    <div id="app">
+    <!-- Title and Cart Button -->
+    <div class="header">
+      <h1>After School Activities</h1>
+      <button @click="togglePage" :disabled="cart.length === 0" class="cart-button">
+        Go to Cart ({{ cart.length }} items)
+      </button>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="content">
+      
+      <!-- Search and Sort Controls -->
+      <div class="controls-container" v-if="currentPage === 'lesson'">
+        <div class="control-item">
+          <input 
+            type="text" 
+            id="search" 
+            v-model="searchQuery" 
+            placeholder="Search for lessons..." 
+            @input="searchLessons"
+          />
+        </div>
+
+        <div class="control-item">
+          <select v-model="sortAttribute" @change="sortLessons">
+            <option value="subject">Sort by Subject</option>
+            <option value="location">Sort by Location</option>
+            <option value="price">Sort by Price</option>
+            <option value="Spaces">Sort by Spaces</option>
+          </select>
+        </div>
+        
+        <div class="control-item">
+          <select v-model="sortOrder" @change="sortLessons">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div v-if="currentPage === 'lesson'" class="product-container">
+        <div v-for="lesson in sortedLessons" :key="lesson.id" class="lesson">
+          <i :class="getIconForSubject(lesson.subject)" class="lesson-icon"></i>
+          <img :src="`http://localhost:3000/images/${lesson.image}`" alt="">
+          <h2>{{ lesson.subject }}</h2>
+          <p>Location: {{ lesson.location }}</p>
+          <p>Price: ${{ lesson.price }}</p>
+          <p>Spaces available: {{ lesson.spaces }}</p>
+
+          <button :disabled="lesson.Spaces <= 0" @click="addToCart(lesson)">
+            Add to Cart
+          </button>
+        </div>
+      </div>
+
+      <!-- Cart Page -->
+      <div v-if="currentPage === 'cart'" class="cart-section active">
+        <h3>Your Shopping Cart</h3>
+        <ul>
+          <li v-for="(cartItem, index) in cart" :key="cartItem.id">
+            <i :class="getIconForSubject(cartItem.subject)" class="lesson-icon"></i>
+            {{ cartItem.subject }} - ${{ cartItem.price }} (x{{ cartItem.quantity }})
+            <button @click="removeFromCart(cartItem)">
+              Remove
+            </button>
+          </li>
+        </ul>
+        <p>Total: ${{ totalPrice }}</p>
+
+        <div>
+          <label for="name">Name:</label>
+          <input 
+            type="text" 
+            id="name" 
+            v-model="name" 
+            placeholder="Enter your name" 
+            @input="validateInput"
+          />
+
+          <label for="phone">Phone:</label>
+          <input 
+            type="text" 
+            id="phone" 
+            v-model="phone" 
+            placeholder="Enter your phone number"
+            maxlength="10"
+            @input="validateInput"
+          />
+        </div>
+
+        <button 
+          :disabled="!isFormValid" 
+          @click="checkout"
+          class="checkout-button"
+        >
+          Checkout
+        </button>
+        
+        <p v-if="orderConfirmed" class="success">Your order has been successfully submitted!</p>
+        
+        <button @click="togglePage">Back to Lessons</button>
+      </div>
+    </div>
+  </div>
+  <script src="index.js"></script>
 </body>
 </html>
