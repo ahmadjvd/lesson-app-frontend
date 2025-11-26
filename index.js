@@ -17,5 +17,24 @@
  created() {
       this.fetchLessons();
     },
+    computed: {
+      sortedLessons() {
+        return this.lessons.slice().sort((a, b) => {
+          if (typeof a[this.sortAttribute] === 'string') {
+            return this.sortOrder === 'asc'
+              ? a[this.sortAttribute].localeCompare(b[this.sortAttribute])
+              : b[this.sortAttribute].localeCompare(a[this.sortAttribute]);
+          } else {
+            return this.sortOrder === 'asc'
+              ? a[this.sortAttribute] - b[this.sortAttribute]
+              : b[this.sortAttribute] - a[this.sortAttribute];
+          }
+        });
+      },
+
+      totalPrice() {
+        return this.cart.reduce((total, lesson) => total + (lesson.price * lesson.quantity), 0);
+      }
+    },
 
 });
