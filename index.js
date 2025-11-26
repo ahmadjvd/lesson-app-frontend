@@ -77,6 +77,11 @@ let app = new Vue({
         }
         lesson.Spaces--;
       },
+        validateInput() {
+        const userNamePattern = /^[a-zA-Z\s]+$/;
+        const userPhonePattern = /^\d{10}$/;
+        this.isFormValid = userNamePattern.test(this.name) && userPhonePattern.test(this.phone);
+      },
     }
 
 });
