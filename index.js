@@ -94,6 +94,9 @@ let app = new Vue({
         const lesson = this.lessons.find(item => item.id === cartItem.id);
         if (lesson) lesson.Spaces++;
       },
+       togglePage() {
+        this.currentPage = this.currentPage === 'lesson' ? 'cart' : 'lesson';
+      },
     }
 
 });
