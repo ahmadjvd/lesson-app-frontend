@@ -8,6 +8,9 @@
       currentPage: 'lesson',
       name: '',
       phone: '',
+      phonePrefix: '050',
+      phoneDigits: '',
+      phoneError: '',
       orderConfirmed: false,
       searchQuery: '',
       isFormValid: false
@@ -78,13 +81,42 @@
         } else {
           this.cart.push({ ...lesson, quantity: 1 });
         }
-        lesson.spaces--;
+        lesson.Spaces--;
       },
 
       validateInput() {
         const userNamePattern = /^[a-zA-Z\s]+$/;
-        const userPhonePattern = /^\d{10}$/;
-        this.isFormValid = userNamePattern.test(this.name) && userPhonePattern.test(this.phone);
+
+        // phoneDigits must be ONLY digits
+        const onlyDigits = /^\d*$/.test(this.phoneDigits);
+
+        // Reset error first
+        this.phoneError = '';
+
+        if (!onlyDigits) {
+          this.phoneError = 'Phone number must contain digits only';
+        } else if (this.phoneDigits.length > 0 && this.phoneDigits.length < 7) {
+          // User started typing but not completed 7 digits
+          this.phoneError = 'Invalid number: must be 7 digits';
+        }
+
+        const isPhoneValid = onlyDigits && this.phoneDigits.length === 7;
+
+        // If phone valid, build full phone number like "0501234567"
+        if (isPhoneValid) {
+          this.phone = this.phonePrefix + this.phoneDigits;
+        } else {
+          this.phone = '';
+        }
+
+        // Checkout enabled only when:
+        // 1) Name is valid
+        // 2) Phone has exactly 7 digits + valid prefix
+        // 3) No phone error
+        this.isFormValid =
+          userNamePattern.test(this.name) &&
+          isPhoneValid &&
+          !this.phoneError;
       },
 
       removeFromCart(cartItem) {
@@ -97,7 +129,7 @@
           }
         }
         const lesson = this.lessons.find(item => item.id === cartItem.id);
-        if (lesson) lesson.spaces++;
+        if (lesson) lesson.Spaces++;
       },
 
       togglePage() {
@@ -127,7 +159,7 @@
           if (data.msg === 'Order placed successfully') {
             
             // Update spaces in backend
-            fetch('https://lesson-app-backend-5pwp.onrender.com/update-spaces', {
+            fetch('https://lesson-app-backend-5pwp.onrender.com/update-Spaces', {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json',
@@ -146,7 +178,7 @@
             this.cart.forEach(cartItem => {
               const product = this.lessons.find(item => item.id === cartItem.id);
               if (product) {
-                product.spaces -= cartItem.quantity;
+                product.Spaces -= cartItem.quantity;
               }
             });
 

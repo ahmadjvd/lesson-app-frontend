@@ -38,7 +38,7 @@
             <option value="subject">Sort by Subject</option>
             <option value="location">Sort by Location</option>
             <option value="price">Sort by Price</option>
-            <option value="spaces">Sort by Spaces</option>
+            <option value="Spaces">Sort by Spaces</option>
           </select>
         </div>
         
@@ -58,9 +58,9 @@
           <h2>{{ lesson.subject }}</h2>
           <p>Location: {{ lesson.location }}</p>
           <p>Price: ${{ lesson.price }}</p>
-          <p>Spaces available: {{ lesson.spaces }}</p>
+          <p>Spaces available: {{ lesson.Spaces }}</p>
 
-          <button :disabled="lesson.spaces <= 0" @click="addToCart(lesson)">
+          <button :disabled="lesson.Spaces <= 0" @click="addToCart(lesson)">
             Add to Cart
           </button>
         </div>
@@ -91,14 +91,28 @@
           />
 
           <label for="phone">Phone:</label>
-          <input 
-            type="text" 
-            id="phone" 
-            v-model="phone" 
-            placeholder="Enter your phone number"
-            maxlength="10"
-            @input="validateInput"
-          />
+          <div class="phone-input">
+            <select v-model="phonePrefix" @change="validateInput">
+              <option value="050">050</option>
+              <option value="052">052</option>
+              <option value="055">055</option>
+              <option value="056">056</option>
+              <option value="059">059</option>
+            </select>
+
+            <input 
+              type="text" 
+              id="phone"
+              v-model="phoneDigits"
+              placeholder="Enter 7 digits"
+              maxlength="7"
+              @input="validateInput"
+            />
+          </div>
+
+          <p v-if="phoneError" class="error">
+            {{ phoneError }}
+          </p>
         </div>
 
         <button 
