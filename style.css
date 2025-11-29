@@ -133,10 +133,6 @@ select:focus {
 }
 
 .lesson img {
-  /* border-radius: 10px; */
-  /* margin: 15px 0; */
-  /* max-width: 100%; */
-  /* height: auto; */
   height: 100px;
   width: 100px;
 }
@@ -275,6 +271,56 @@ select:focus {
   margin-bottom: 20px;
 }
 
+/* Phone Input Styling */
+.phone-input {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.phone-input select {
+  flex: 0 0 100px;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 48px;
+}
+
+.phone-input select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.phone-input input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  height: 48px;
+}
+
+.phone-input input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Error Message */
+.error {
+  color: #dc3545;
+  font-size: 0.9rem;
+  margin-top: -15px;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
 /* Checkout Button */
 .checkout-button {
   background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
@@ -366,6 +412,14 @@ select:focus {
     flex-direction: column;
     text-align: center;
   }
+
+  .phone-input {
+    flex-direction: column;
+  }
+
+  .phone-input select {
+    flex: 1;
+  }
 }
 
 @media (max-width: 480px) {
@@ -383,5 +437,13 @@ select:focus {
 
   .content {
     padding: 20px;
+  }
+
+  .phone-input {
+    flex-direction: column;
+  }
+
+  .phone-input select {
+    flex: 1;
   }
 }
