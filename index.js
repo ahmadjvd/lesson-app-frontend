@@ -174,14 +174,6 @@
               console.error('Error updating product availability:', error);
             });
 
-            // Update frontend
-            this.cart.forEach(cartItem => {
-              const product = this.lessons.find(item => item.id === cartItem.id);
-              if (product) {
-                product.Spaces -= cartItem.quantity;
-              }
-            });
-
             // Clear cart and show confirmation
             this.cart = [];
             this.orderConfirmed = true;
