@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Lesson App</title>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
   <link rel="stylesheet" href="style.css">
 
@@ -71,12 +71,16 @@
         <h3>Your Shopping Cart</h3>
         <ul>
           <li v-for="(cartItem, index) in cart" :key="cartItem.id">
-            <i :class="getIconForSubject(cartItem.subject)" class="lesson-icon"></i>
-            {{ cartItem.subject }} - ${{ cartItem.price }} (x{{ cartItem.quantity }})
+            <img :src="`https://lesson-app-backend-5pwp.onrender.com/images/${cartItem.image}`" alt="lesson" class="cart-item-image">
+            <div class="cart-item-details">
+                <h4>{{ cartItem.subject }}</h4>
+                <p>Location: {{ cartItem.location }}</p>
+                <p>Price: ${{ cartItem.price }} (x{{ cartItem.quantity }})</p>
+            </div>
             <button @click="removeFromCart(cartItem)">
-              Remove
+                Remove
             </button>
-          </li>
+        </li>
         </ul>
         <p>Total: ${{ totalPrice }}</p>
 

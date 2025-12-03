@@ -204,29 +204,55 @@ select:focus {
   margin-bottom: 25px;
 }
 
-.cart-section li {
+/* ========================
+   CART ITEM STYLING - UPDATED
+   ======================== */
+
+.cart-section ul li {
   background: #f8f9fa;
-  padding: 20px;
+  padding: 15px;
   margin-bottom: 15px;
   border-radius: 10px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   gap: 15px;
   transition: all 0.3s ease;
+  border: 1px solid #e0e0e0;
 }
 
-.cart-section li:hover {
+.cart-section ul li:hover {
   background: #e9ecef;
   transform: translateX(5px);
 }
 
-.cart-section li .lesson-icon {
-  font-size: 1.5rem;
-  margin: 0;
+.cart-item-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
 }
 
-.cart-section li button {
+.cart-item-details {
+  flex: 1;
+  text-align: left;
+}
+
+.cart-item-details h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.cart-item-details p {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #666;
+}
+
+.cart-section ul li button {
   background: #dc3545;
   color: white;
   border: none;
@@ -235,12 +261,17 @@ select:focus {
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 600;
+  flex-shrink: 0;
 }
 
-.cart-section li button:hover {
+.cart-section ul li button:hover {
   background: #c82333;
   transform: scale(1.05);
 }
+
+/* ========================
+   END CART ITEM STYLING
+   ======================== */
 
 .cart-section > p {
   font-size: 1.5rem;
@@ -408,8 +439,12 @@ select:focus {
     grid-template-columns: 1fr;
   }
 
-  .cart-section li {
+  .cart-section ul li {
     flex-direction: column;
+    text-align: center;
+  }
+
+  .cart-item-details {
     text-align: center;
   }
 
@@ -437,6 +472,19 @@ select:focus {
 
   .content {
     padding: 20px;
+  }
+
+  .cart-item-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .cart-item-details h4 {
+    font-size: 14px;
+  }
+
+  .cart-item-details p {
+    font-size: 12px;
   }
 
   .phone-input {
